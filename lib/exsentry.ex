@@ -26,7 +26,15 @@ defmodule ExSentry do
   3. Optional: To configure the default ExSentry client, specify your
      Sentry DSN in `config.exs`:
 
-          config :exsentry, dsn: "your-dsn-here"
+          config :exsentry,
+            dsn: "your-dsn-here",
+            sender_opts: [ # this section optional
+              disabled: false, # stops sending to sentry
+              delay: 1000, # delay between retries
+              timeout: 3000, # http timeout for sentry post
+              retries: 3,
+              logging: true, # everything sent to Sentry is also logged w/ Logger
+            ]
 
 
   ## Usage

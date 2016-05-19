@@ -133,8 +133,10 @@ defmodule ExSentry.Client do
         {"Content-Type", "application/json"}
       ]
       sender_opts = Application.get_env(:exsentry, :sender_opts) || %{}
-      {:ok, pid} = GenServer.start_link(ExSentry.Sender, sender_opts)
-      ExSentry.Sender.send_request(pid, state.url, headers, stripped_payload)
+      unless sender_opts[:disabled] do
+        {:ok, pid} = GenServer.start_link(ExSentry.Sender, sender_opts)
+        ExSentry.Sender.send_request(pid, state.url, headers, stripped_payload)
+      end
     end
   end
 
